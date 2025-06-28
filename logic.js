@@ -45,16 +45,19 @@ function createAndAddTaskList(task, taskID){                      //Function to 
     li.classList.add("listClass");
     li.id = taskID;
     
+    const label = document.createElement("label");      //Creating label to set our task
+    label.innerText = task;
+    label.classList.add("taskText");
 
     const checkBox = document.createElement("input");   //Creating checkbox element
     checkBox.type = "checkbox"
         checkBox.addEventListener("change",()=>{        //Checking if task is completed or not
             if(checkBox.checked){
-                li.classList.add("taskCompleted");
+                label.classList.add("taskCompleted");
                 localStorage.setItem(`checkbox${taskID}Status`, checkBox.checked );
             }
             else{
-                li.classList.remove("taskCompleted");
+                label.classList.remove("taskCompleted");
                 localStorage.setItem(`checkbox${taskID}Status`, checkBox.checked );
             }
         })
@@ -63,15 +66,15 @@ function createAndAddTaskList(task, taskID){                      //Function to 
         const checkboxStatus = localStorage.getItem(`checkbox${taskID}Status`);         //Checking the value of checkbox to keep checkbox checked after refresh
         if (checkboxStatus === "true") {
             checkBox.checked = true;
-            li.classList.add("taskCompleted");
-        }
+            label.classList.add("taskCompleted");
 
-    const label = document.createElement("label");      //Creating label to set our task
-    label.innerText = task;
-    label.classList.add("taskText");
+        }
 
     
     const deleteBtn = document.createElement("button");
+    const icon = document.createElement("i");
+    icon.className = "fa-solid fa-trash";
+    deleteBtn.appendChild(icon);
     deleteBtn.classList.add("deleteBtnStyle");
     deleteBtn.addEventListener("click",()=>{
         deleteTask(taskID);
@@ -92,6 +95,4 @@ function deleteTask(taskID){                                    //function to re
     localStorage.removeItem(taskID);
     localStorage.removeItem(`checkbox${taskID}Status`); 
     document.getElementById(taskID)?.remove();                  //removing deleted task from the DOM
-
-    
 }
